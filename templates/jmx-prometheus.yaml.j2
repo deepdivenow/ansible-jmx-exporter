@@ -1,0 +1,7 @@
+- targets:
+    - '{{ ansible_fqdn }}:{{ jmx_exporter_port }}'
+  labels:
+    job: {{ jmx_exporter_service }}
+{% if  jmx_exporter_team is defined %}
+    team: {{ jmx_exporter_team }}
+{% endif %}

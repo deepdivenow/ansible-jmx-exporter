@@ -1,0 +1,17 @@
+galaxy_info:
+  author: Andrey Kislyak
+  description: role for jmx-exporter exporter
+  company: United Traders
+
+  license: Apache
+
+  min_ansible_version: 2.4
+
+  platforms:
+  - name: EL
+    versions:
+    - 7
+
+  galaxy_tags: []
+
+dependencies: []

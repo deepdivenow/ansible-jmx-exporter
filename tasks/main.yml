@@ -1,0 +1,40 @@
+---
+# tasks file for ansible-jmx-exporter
+- name: create group for exporter
+  group: name="{{ jmx_exporter_group }}"
+
+- name: create user for exporter
+  user: name="{{ jmx_exporter_user }}"
+
+- name: create directory for exporter
+  file:
+    state: directory
+    path: "{{ jmx_exporter_dir }}"
+    owner: "{{ jmx_exporter_user }}"
+    group: "{{ jmx_exporter_group }}"
+    mode: 0755
+
+- name: Download prometheus jmx_exporter
+  get_url:
+    url: "{{ jmx_exporter_url }}"
+    owner: "{{ jmx_exporter_user }}"
+    group: "{{ jmx_exporter_group }}"
+    dest: "{{ jmx_exporter_dir }}/jmx_prometheus_javaagent.jar"
+    force: yes
+    mode: 0644
+
+- name: Create metrics config
+  template:
+    src: "{{ jmx_exporter_service }}_metrics.yml.j2"
+    dest: "{{ jmx_exporter_dir }}/{{ jmx_exporter_service }}_metrics.yml"
+    owner: "{{ jmx_exporter_user }}"
+    group: "{{ jmx_exporter_group }}"
+    mode: 0644
+  when: jmx_exporter_service is defined
+
+- name: create prometheus job file for metrics gathering
+  template: src=jmx-prometheus.yaml.j2 dest=/etc/prometheus/hosts/{{ jmx_exporter_service }}-{{ ansible_fqdn }}.yaml
+  delegate_to: "{{ item }}"
+  delegate_facts: True
+  notify: reload prometheus
+  with_items: "{{ groups.prometheus | default([]) }}"

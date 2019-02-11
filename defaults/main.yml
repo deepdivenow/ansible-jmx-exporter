@@ -1,0 +1,9 @@
+---
+# defaults file for ansible-jmx-exporters
+jmx_exporter_user: jmx_exporter
+jmx_exporter_group: jmx_exporter
+jmx_exporter_dir: '/opt/jmx_exporter'
+jmx_exporter_url: 'https://repo1.maven.org/maven2/io/prometheus/jmx/jmx_prometheus_javaagent/0.11.0/jmx_prometheus_javaagent-0.11.0.jar'
+#jmx_exporter_service:
+#jmx_exporter_port:
+#jmx_exporter_team:
